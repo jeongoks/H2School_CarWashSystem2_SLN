@@ -11,7 +11,7 @@ namespace H1School_CarWashSystem1
     {
         private bool washStartFlag = false;
         CancellationTokenSource token1 = new CancellationTokenSource();
-        private WashingHall[] WashingHalls { get; set; }
+        public WashingHall[] WashingHalls { get; set; }
         public List<Vehicle> VehicleInHall { get; set; }
         public List<WashingType> WashType { get; set; }
         public List<Processes> Processes { get; set; }
@@ -282,6 +282,7 @@ namespace H1School_CarWashSystem1
             }
 
             hallId.VehicleInHall = false;
+            hallId.WashCount++;
         }
 
         private static readonly object _lock = new object();
