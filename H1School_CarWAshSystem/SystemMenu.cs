@@ -27,11 +27,11 @@ namespace H1School_CarWashSystem1
                 int menuSelect = 0;
 
                 Console.Clear();
-                Console.WriteLine("------------------------------------");
-                Console.WriteLine("    What can we do for you today?   ");
-                Console.WriteLine("------------------------------------");
-                Console.WriteLine("1. Check for available Washing Hall.\n2. Stop Wash.");
-                Console.WriteLine("------------------------------------");
+                Console.WriteLine("-----------------------------------------");
+                Console.WriteLine("       What can we do for you today?     ");
+                Console.WriteLine("-----------------------------------------");
+                Console.WriteLine("1. Check for available Washing Hall.\n2. Stop Wash.\n3. Check how many times the Halls have washed.");
+                Console.WriteLine("-----------------------------------------");
                 do
                 {
                     Console.WriteLine("Enter your Selection:");
@@ -117,6 +117,19 @@ namespace H1School_CarWashSystem1
                             Console.WriteLine("Return to Menu by pressing Enter...");
                             Console.ReadLine();
                         }
+                        break;
+                    case 3:
+                        Console.Clear();
+                        Console.WriteLine("-------------------------------------------");
+                        Console.WriteLine("       The washing halls have washed:      ");
+                        Console.WriteLine("-------------------------------------------");
+                        foreach (WashingHall item in washingHall.WashingHalls)
+                        {
+                            Console.WriteLine($"{item.Id} has reached {item.WashCount} washes.");
+                        }
+                        Console.WriteLine("-------------------------------------------");
+                        Console.WriteLine("Press Enter to Return to the Main Menu...");
+                        Console.ReadLine();
                         break;
                     default:
                         Console.WriteLine("Unknown Input. Try again.");

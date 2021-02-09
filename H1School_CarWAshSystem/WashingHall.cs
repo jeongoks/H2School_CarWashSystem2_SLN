@@ -7,6 +7,7 @@ namespace H1School_CarWashSystem1
 {
     public class WashingHall
     {
+        public int WashCount { get; set; }
         public bool VehicleInHall { get; set; }
         public List<WashingType> WashingTypes { get; set; }
         public int Id { get; set; }
@@ -17,6 +18,7 @@ namespace H1School_CarWashSystem1
             this.Id = id;
             WashingTypes = new List<WashingType>();
             VehicleInHall = false;
+            WashCount = 0;
         }
 
         public bool CheckIfVehicleInHall()
