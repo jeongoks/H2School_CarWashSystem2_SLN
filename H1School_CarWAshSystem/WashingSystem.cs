@@ -9,6 +9,8 @@ namespace H1School_CarWashSystem1
 {
     public class WashingSystem
     {
+        private bool washStartFlag = false;
+        CancellationTokenSource token1 = new CancellationTokenSource();
         private WashingHall[] WashingHalls { get; set; }
         public List<Vehicle> VehicleInHall { get; set; }
         public List<WashingType> WashType { get; set; }
@@ -24,9 +26,9 @@ namespace H1School_CarWashSystem1
             // This is where we create the amount of Washing Halls wanted.
             for (int i = 0; i < WashingHalls.Length; i++)
             {
-                WashingHalls[i] = new WashingHall(i+1);
+                WashingHalls[i] = new WashingHall(i + 1);
             }
-            
+
         }
 
         /// <summary>
@@ -132,7 +134,7 @@ namespace H1School_CarWashSystem1
             standardProgram.Processes.Add(Processes[2]);
             WashType.Add(standardProgram);
         }
-#endregion
+        #endregion
 
         #region Adding the Processes to our Program Types.
         public void AddProcessesToGoldProgram()
@@ -173,7 +175,7 @@ namespace H1School_CarWashSystem1
         /// <param name="inputProgramId"></param>
         /// <param name="cancellationToken"></param>
         /// <returns></returns>
-        public async Task StartWash(int name, int inputProgramId, CancellationToken cancellationToken)
+        public async void StartWash(int name, int inputProgramId, CancellationToken cancellationToken)
         {
             await Task.Run(() =>
             {
@@ -182,9 +184,16 @@ namespace H1School_CarWashSystem1
                 washingHall.VehicleInHall = true;
                 Console.SetCursorPosition(0, 10);
                 WashingType chosenType = FindWashingType(inputProgramId);
-                CancellationTokenSource token1 = new CancellationTokenSource();
-                CancellationToken cancelToken = token1.Token;
-                Task startingWash = WashInProgress(cancellationToken, new Progress<ImportProgress>(DisplayProgress), washingHall, inputProgramId);
+                try
+                {
+                    WashInProgress(cancellationToken, new Progress<ImportProgress>(DisplayProgress), washingHall, inputProgramId);
+                }
+                catch (OperationCanceledException)
+                {
+
+                    Console.WriteLine("The Wash was canceled.");
+                    washingHall.VehicleInHall = false;
+                }
             }, cancellationToken);
         }
 
@@ -196,89 +205,81 @@ namespace H1School_CarWashSystem1
         /// <param name="hallId"></param>
         /// <param name="programType"></param>
         /// <returns></returns>
-        public async Task WashInProgress(CancellationToken cancellationToken, IProgress<ImportProgress> progressObserver, WashingHall hallId, int programType)
+        public void WashInProgress(CancellationToken cancellationToken, IProgress<ImportProgress> progressObserver, WashingHall hallId, int programType)
         {
-            await Task.Run(() =>
+            washStartFlag = true;
+            if (hallId.Id == 1)
             {
-                if (hallId.Id == 1)
+                for (int i = 1; i < 101; i++)
                 {
-                    for (int i = 1; i < 101; i++)
+                    cancellationToken.ThrowIfCancellationRequested();
+                    #region If statements depending on the Program Type.
+                    if (programType == 1)
                     {
-                        #region If statements depending on the Program Type.
-                        if (programType == 1)
-                        {
-                            progressObserver.Report(new ImportProgress { OverallProgress = i, WashingHall = hallId.Id });
-                            cancellationToken.ThrowIfCancellationRequested();
-                            Thread.Sleep(2000);
-                        }
-                        if (programType == 2)
-                        {
-                            progressObserver.Report(new ImportProgress { OverallProgress = i, WashingHall = hallId.Id });
-                            cancellationToken.ThrowIfCancellationRequested();
-                            Thread.Sleep(1000);
-                        }
-                        if (programType == 3)
-                        {
-                            progressObserver.Report(new ImportProgress { OverallProgress = i, WashingHall = hallId.Id });
-                            cancellationToken.ThrowIfCancellationRequested();
-                            Thread.Sleep(500);
-                        }
-                        #endregion
+                        progressObserver.Report(new ImportProgress { OverallProgress = i, WashingHall = hallId.Id });
+                        Thread.Sleep(2000);
                     }
+                    if (programType == 2)
+                    {
+                        progressObserver.Report(new ImportProgress { OverallProgress = i, WashingHall = hallId.Id });
+                        Thread.Sleep(1000);
+                    }
+                    if (programType == 3)
+                    {
+                        progressObserver.Report(new ImportProgress { OverallProgress = i, WashingHall = hallId.Id });
+                        Thread.Sleep(500);
+                    }
+                    #endregion
                 }
-                if (hallId.Id == 2)
+            }
+            if (hallId.Id == 2)
+            {
+                for (int i = 1; i < 101; i++)
                 {
-                    for (int i = 1; i < 101; i++)
+                    cancellationToken.ThrowIfCancellationRequested();
+                    #region If statements depending on the Program Type.
+                    if (programType == 1)
                     {
-                        #region If statements depending on the Program Type.
-                        if (programType == 1)
-                        {
-                            progressObserver.Report(new ImportProgress { OverallProgress = i, WashingHall = hallId.Id });
-                            cancellationToken.ThrowIfCancellationRequested();
-                            Thread.Sleep(2000);
-                        }
-                        if (programType == 2)
-                        {
-                            progressObserver.Report(new ImportProgress { OverallProgress = i, WashingHall = hallId.Id });
-                            cancellationToken.ThrowIfCancellationRequested();
-                            Thread.Sleep(1000);
-                        }
-                        if (programType == 3)
-                        {
-                            progressObserver.Report(new ImportProgress { OverallProgress = i, WashingHall = hallId.Id });
-                            cancellationToken.ThrowIfCancellationRequested();
-                            Thread.Sleep(500);
-                        }
-                        #endregion
+                        progressObserver.Report(new ImportProgress { OverallProgress = i, WashingHall = hallId.Id });
+                        Thread.Sleep(2000);
                     }
+                    if (programType == 2)
+                    {
+                        progressObserver.Report(new ImportProgress { OverallProgress = i, WashingHall = hallId.Id });
+                        Thread.Sleep(1000);
+                    }
+                    if (programType == 3)
+                    {
+                        progressObserver.Report(new ImportProgress { OverallProgress = i, WashingHall = hallId.Id });
+                        Thread.Sleep(500);
+                    }
+                    #endregion
                 }
-                if (hallId.Id == 3)
+            }
+            if (hallId.Id == 3)
+            {
+                for (int i = 1; i < 101; i++)
                 {
-                    for (int i = 1; i < 101; i++)
+                    cancellationToken.ThrowIfCancellationRequested();
+                    #region If statements depending on the Program Type.
+                    if (programType == 1)
                     {
-                        #region If statements depending on the Program Type.
-                        if (programType == 1)
-                        {
-                            progressObserver.Report(new ImportProgress { OverallProgress = i, WashingHall = hallId.Id });
-                            cancellationToken.ThrowIfCancellationRequested();
-                            Thread.Sleep(2000);
-                        }
-                        if (programType == 2)
-                        {
-                            progressObserver.Report(new ImportProgress { OverallProgress = i, WashingHall = hallId.Id });
-                            cancellationToken.ThrowIfCancellationRequested();
-                            Thread.Sleep(1000);
-                        }
-                        if (programType == 3)
-                        {
-                            progressObserver.Report(new ImportProgress { OverallProgress = i, WashingHall = hallId.Id });
-                            cancellationToken.ThrowIfCancellationRequested();
-                            Thread.Sleep(500);
-                        }
-                        #endregion
+                        progressObserver.Report(new ImportProgress { OverallProgress = i, WashingHall = hallId.Id });
+                        Thread.Sleep(2000);
                     }
+                    if (programType == 2)
+                    {
+                        progressObserver.Report(new ImportProgress { OverallProgress = i, WashingHall = hallId.Id });
+                        Thread.Sleep(1000);
+                    }
+                    if (programType == 3)
+                    {
+                        progressObserver.Report(new ImportProgress { OverallProgress = i, WashingHall = hallId.Id });
+                        Thread.Sleep(500);
+                    }
+                    #endregion
                 }
-            }, cancellationToken);
+            }
 
             hallId.VehicleInHall = false;
         }
