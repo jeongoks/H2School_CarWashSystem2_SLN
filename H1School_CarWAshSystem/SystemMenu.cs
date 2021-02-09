@@ -12,6 +12,12 @@ namespace H1School_CarWashSystem1
         public static void Menu()
         {
             WashingSystem washingHall = new WashingSystem(3);
+            CancellationTokenSource cancelSource1 = new CancellationTokenSource();
+            CancellationTokenSource cancelSource2 = new CancellationTokenSource();
+            CancellationTokenSource cancelSource3 = new CancellationTokenSource();
+            CancellationToken token1 = cancelSource1.Token;
+            CancellationToken token2 = cancelSource2.Token;
+            CancellationToken token3 = cancelSource3.Token;
 
             // Creates all of the Washing Types with Processes.
             washingHall.CreateTypesAndProcesses(); 
@@ -24,7 +30,7 @@ namespace H1School_CarWashSystem1
                 Console.WriteLine("------------------------------------");
                 Console.WriteLine("    What can we do for you today?   ");
                 Console.WriteLine("------------------------------------");
-                Console.WriteLine("1. Check for available Washing Hall.");
+                Console.WriteLine("1. Check for available Washing Hall.\n2. Stop Wash.");
                 Console.WriteLine("------------------------------------");
                 do
                 {
@@ -38,12 +44,6 @@ namespace H1School_CarWashSystem1
                         Console.WriteLine("-------------------------------------------------------");
                         int inputProgram = 0;
                         int input = 0;
-                        CancellationTokenSource cancelToken1 = new CancellationTokenSource();
-                        CancellationTokenSource cancelToken2 = new CancellationTokenSource();
-                        CancellationTokenSource cancelToken3 = new CancellationTokenSource();
-                        CancellationToken token1 = cancelToken1.Token;
-                        CancellationToken token2 = cancelToken2.Token;
-                        CancellationToken token3 = cancelToken3.Token;
                         Console.Write($"These are the available wash halls: ");
                         foreach (WashingHall item in washingHall.CheckAvailableWashHall())
                         {
@@ -63,7 +63,7 @@ namespace H1School_CarWashSystem1
                                 Console.WriteLine("Which program would you like to use?");
                                 washingHall.ShowProgramTypes();
                             } while (!int.TryParse(Console.ReadLine(), out inputProgram));
-                            Task task1 = washingHall.StartWash(input, inputProgram, token1);
+                            washingHall.StartWash(input, inputProgram, token1);
                         }
                         if (input == 2) // Washing Hall 2
                         {
@@ -73,7 +73,7 @@ namespace H1School_CarWashSystem1
                                 Console.WriteLine("Which program would you like to use?");
                                 washingHall.ShowProgramTypes();
                             } while (!int.TryParse(Console.ReadLine(), out inputProgram));
-                            Task task2 = washingHall.StartWash(input, inputProgram, token2);
+                            washingHall.StartWash(input, inputProgram, token2);
                         }
                         if (input == 3) // Washing Hall 3
                         {
@@ -83,7 +83,39 @@ namespace H1School_CarWashSystem1
                                 Console.WriteLine("Which program would you like to use?");
                                 washingHall.ShowProgramTypes();
                             } while (!int.TryParse(Console.ReadLine(), out inputProgram));
-                            Task task3 = washingHall.StartWash(input, inputProgram, token3);
+                            washingHall.StartWash(input, inputProgram, token3);
+                        }
+                        break;
+                    case 2:
+                        Console.Clear();
+                        Console.WriteLine("-----------------------------------------------");
+                        do
+                        {
+                            Console.WriteLine("Choose which of the Halls you wanna stop:");
+                        } while (!int.TryParse(Console.ReadLine(), out input));
+                        if (input == 1)
+                        {
+                            Console.WriteLine("Cancel requested.");
+                            cancelSource1.Cancel();
+                            int.TryParse(Console.ReadLine(), out inputProgram);
+                            Console.WriteLine("Return to Menu by pressing Enter...");
+                            Console.ReadLine();
+                        }
+                        if (input == 2)
+                        {
+                            Console.WriteLine("Cancel requested.");
+                            cancelSource2.Cancel();
+                            int.TryParse(Console.ReadLine(), out inputProgram);
+                            Console.WriteLine("Return to Menu by pressing Enter...");
+                            Console.ReadLine();
+                        }
+                        if (input == 3)
+                        {
+                            Console.WriteLine("Cancel requested.");
+                            cancelSource3.Cancel();
+                            int.TryParse(Console.ReadLine(), out inputProgram);
+                            Console.WriteLine("Return to Menu by pressing Enter...");
+                            Console.ReadLine();
                         }
                         break;
                     default:
