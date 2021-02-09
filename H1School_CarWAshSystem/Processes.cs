@@ -7,16 +7,16 @@ namespace H1School_CarWashSystem1
 {
     public class Processes
     {
-        public int Time { get; set; }
+        public List<WashingType> WashTypes { get; set; }
+        public bool Rinsing { get; set; }
+        public bool Washing { get; set; }
+        public bool Waxing { get; set; }
+        public bool UndercarriageRinse { get; set; }
+        public bool Drying { get; set; }
 
-        public string Rinsing { get; set; }
-
-        public string Washing { get; set; }
-
-        public string Waxing { get; set; }
-
-        public string UndercarriageRinse { get; set; }
-
-        public int Drying { get; set; }
+        public Processes()
+        {
+            WashTypes = new List<WashingType>();
+        }
     }
 }

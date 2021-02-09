@@ -6,14 +6,9 @@ using System.Threading.Tasks;
 
 namespace H1School_CarWashSystem1
 {
-    class Program
+    public class ImportProgress
     {
-        static void Main(string[] args)
-        {
-            while (true)
-            {
-                SystemMenu.Menu();
-            }
-        }
+        public int OverallProgress { get; set; }
+        public int WashingHall { get; set; }
     }
 }
