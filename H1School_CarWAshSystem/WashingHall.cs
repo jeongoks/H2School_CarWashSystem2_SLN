@@ -7,14 +7,21 @@ namespace H1School_CarWashSystem1
 {
     public class WashingHall
     {
-        public List<Vehicle> Vehicle { get; set; }
+        public bool VehicleInHall { get; set; }
+        public List<WashingType> WashingTypes { get; set; }
+        public int Id { get; set; }
+        public bool Cycle { get; set; }
 
-        public List<WashingType> WashType { get; set; }
-
-        public WashingHall(List<WashingType> types)
+        public WashingHall(int id)
         {
-            WashType = new List<WashingType>();
-            WashType = types;
+            this.Id = id;
+            WashingTypes = new List<WashingType>();
+            VehicleInHall = false;
+        }
+
+        public bool CheckIfVehicleInHall()
+        {
+            return VehicleInHall;
         }
     }
 }
